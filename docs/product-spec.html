@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentFlow — Multi-Agent AI Platform for Asset Management</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f8fafc; color: #1e293b; line-height: 1.7; }
+
+  /* NAV */
+  nav { background: #0f172a; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  nav .logo { color: #fff; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  nav .logo span { color: #7c3aed; }
+  nav .links a { color: #94a3b8; text-decoration: none; margin-left: 28px; font-size: 14px; }
+  nav .links a:hover { color: #fff; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%); color: #fff; padding: 100px 40px; text-align: center; }
+  .hero .badge { display: inline-block; background: rgba(124,58,237,0.2); border: 1px solid #7c3aed; color: #a78bfa; padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+  .hero h1 { font-size: 56px; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; line-height: 1.1; }
+  .hero h1 span { color: #7c3aed; }
+  .hero p { font-size: 20px; color: #94a3b8; max-width: 640px; margin: 0 auto 40px; }
+  .hero .cta { display: inline-block; background: #7c3aed; color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 16px; margin-right: 12px; }
+  .hero .cta.outline { background: transparent; border: 2px solid #475569; color: #e2e8f0; }
+
+  /* SECTIONS */
+  section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+  h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+  h2 span { color: #7c3aed; }
+  .section-sub { color: #64748b; font-size: 18px; margin-bottom: 48px; max-width: 600px; }
+  .divider { border: none; border-top: 1px solid #e2e8f0; margin: 0; }
+
+  /* CARDS */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; }
+  .card .icon { font-size: 32px; margin-bottom: 14px; }
+  .card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .card p { color: #64748b; font-size: 15px; }
+
+  /* PIPELINE */
+  .pipeline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 32px 0; }
+  .agent-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; text-align: center; min-width: 130px; }
+  .agent-box .agent-icon { font-size: 28px; }
+  .agent-box .agent-name { font-size: 13px; font-weight: 700; margin-top: 6px; color: #1e293b; }
+  .agent-box .agent-role { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .agent-box.highlight { border-color: #7c3aed; background: #faf5ff; }
+  .arrow { font-size: 24px; color: #94a3b8; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #e2e8f0; }
+  th { background: #0f172a; color: #fff; padding: 14px 20px; text-align: left; font-size: 14px; }
+  td { padding: 14px 20px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .tag.green { background: #dcfce7; color: #166534; }
+  .tag.blue { background: #dbeafe; color: #1d4ed8; }
+  .tag.purple { background: #f3e8ff; color: #6b21a8; }
+  .tag.orange { background: #ffedd5; color: #9a3412; }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; background: #0f172a; border-radius: 20px; padding: 48px; }
+  .stat { text-align: center; color: #fff; }
+  .stat .number { font-size: 48px; font-weight: 900; color: #7c3aed; line-height: 1; }
+  .stat .label { font-size: 14px; color: #94a3b8; margin-top: 8px; }
+
+  /* CODE BLOCK */
+  pre { background: #0f172a; color: #e2e8f0; padding: 24px; border-radius: 12px; font-size: 13px; overflow-x: auto; margin: 16px 0; line-height: 1.8; }
+  code { font-family: 'Courier New', monospace; }
+  .comment { color: #64748b; }
+  .keyword { color: #a78bfa; }
+  .string { color: #86efac; }
+
+  /* USE CASES */
+  .use-case { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; margin-bottom: 20px; display: grid; grid-template-columns: 60px 1fr; gap: 20px; align-items: start; }
+  .use-case .uc-icon { font-size: 36px; }
+  .use-case h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .use-case p { color: #64748b; font-size: 15px; margin-bottom: 12px; }
+  .use-case .pipeline-mini { font-size: 13px; background: #f8fafc; border-radius: 8px; padding: 10px 14px; color: #475569; font-family: monospace; }
+
+  /* FOOTER */
+  footer { background: #0f172a; color: #64748b; text-align: center; padding: 40px; font-size: 14px; }
+  footer a { color: #7c3aed; text-decoration: none; }
+
+  /* DARK BAND */
+  .dark-band { background: #0f172a; color: #fff; padding: 80px 40px; }
+  .dark-band-inner { max-width: 1100px; margin: 0 auto; }
+  .dark-band h2 { color: #fff; }
+  .dark-band .section-sub { color: #94a3b8; }
+
+  @media (max-width: 700px) {
+    .hero h1 { font-size: 36px; }
+    .pipeline { justify-content: center; }
+    nav .links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Agent<span>Flow</span></div>
+  <div class="links">
+    <a href="#overview">Overview</a>
+    <a href="#usecases">Use Cases</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#pipelines">Pipelines</a>
+    <a href="#tech">Tech Spec</a>
+    <a href="#deploy">Deploy</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">🚀 Built on Anthropic Claude · Open Source</div>
+  <h1>Multi-Agent AI for<br><span>Asset Management</span></h1>
+  <p>A production-ready framework where specialist AI agents research, debate, challenge, and report — so your team makes better investment decisions, faster.</p>
+  <a href="#usecases" class="cta">See Use Cases</a>
+  <a href="#deploy" class="cta outline">Get Started</a>
+</div>
+
+<!-- STATS -->
+<div style="padding: 60px 40px; max-width: 1100px; margin: 0 auto;">
+  <div class="stats">
+    <div class="stat"><div class="number">5x</div><div class="label">Faster investment research</div></div>
+    <div class="stat"><div class="number">4</div><div class="label">Specialist agents per pipeline</div></div>
+    <div class="stat"><div class="number">3</div><div class="label">Interaction patterns</div></div>
+    <div class="stat"><div class="number">100%</div><div class="label">Audit trail — every agent logged</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <h2>What is <span>AgentFlow</span>?</h2>
+  <p class="section-sub">AgentFlow is an open-source multi-agent AI framework that coordinates multiple Claude AI models — each with a specialist role — to automate complex financial workflows.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🧠</div>
+      <h3>Multiple Specialist Agents</h3>
+      <p>Each agent has a defined role — Researcher, Bull Analyst, Bear Analyst, Risk Manager, Report Writer. They work together like a real investment team.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⚔️</div>
+      <h3>Built-in Challenge Mechanism</h3>
+      <p>A dedicated Bear Analyst always stress-tests the bull case. No groupthink. Every investment thesis is challenged before a recommendation is made.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📋</div>
+      <h3>Full Audit Trail</h3>
+      <p>Every agent's reasoning is logged and visible. Compliance teams can see exactly how a recommendation was reached — step by step.</p>
+    </div>
+    <div class="card">
+      <div class="icon">⚡</div>
+      <h3>Real-time Streaming</h3>
+      <p>Watch each agent think and respond live — token by token — through the web UI. No waiting for a black-box answer.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🔧</div>
+      <h3>Fully Customisable</h3>
+      <p>Swap models, change system prompts, add tools (web search, databases, Bloomberg). Build on top of the framework for your specific workflow.</p>
+    </div>
+    <div class="card">
+      <div class="icon">☁️</div>
+      <h3>Deploy Anywhere</h3>
+      <p>Run locally, on GitHub Codespaces, or deploy to Anthropic Agent Core for fully managed hosted agents with per-session containers.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- THE PROBLEM -->
+<div class="dark-band">
+  <div class="dark-band-inner">
+    <h2>The Problem We Solve</h2>
+    <p class="section-sub">Investment research is slow, inconsistent, and prone to bias.</p>
+    <div class="cards" style="margin-top: 0;">
+      <div class="card" style="background:#1e293b; border-color:#334155;">
+        <div class="icon">⏱️</div>
+        <h3 style="color:#fff;">Hours per company</h3>
+        <p>A single earnings analysis — reading transcripts, modelling financials, writing a memo — takes a senior analyst 3-5 hours. AgentFlow does it in minutes.</p>
+      </div>
+      <div class="card" style="background:#1e293b; border-color:#334155;">
+        <div class="icon">🎭</div>
+        <h3 style="color:#fff;">No consistent framework</h3>
+        <p>Different analysts follow different processes. AgentFlow enforces the same rigorous pipeline every time — same questions, same challenge mechanism.</p>
+      </div>
+      <div class="card" style="background:#1e293b; border-color:#334155;">
+        <div class="icon">👥</div>
+        <h3 style="color:#fff;">Groupthink in committees</h3>
+        <p>Investment committees often reinforce existing views. A dedicated Bear Agent always argues the other side — regardless of consensus.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- USE CASES -->
+<section id="usecases">
+  <h2>Finance <span>Use Cases</span></h2>
+  <p class="section-sub">Five high-value workflows ready to deploy today.</p>
+
+  <div class="use-case">
+    <div class="uc-icon">📊</div>
+    <div>
+      <h3>1. Earnings Call Analysis</h3>
+      <p>Paste any earnings transcript. Five agents extract facts, build bull and bear cases, stress-test risks, and produce a downloadable investment memo — in minutes.</p>
+      <div class="pipeline-mini">Researcher → Bull Analyst → Bear Analyst → Risk Manager → Investment Memo</div>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="uc-icon">⚖️</div>
+    <div>
+      <h3>2. Portfolio Position Debate</h3>
+      <p>Two agents take opposing sides on whether to hold, increase, or exit a position. A Risk Manager synthesises a recommendation with position sizing guidance.</p>
+      <div class="pipeline-mini">Bull Agent ↔ Bear Agent (N rounds) → Risk Manager → Final Recommendation</div>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="uc-icon">📝</div>
+    <div>
+      <h3>3. Compliance & Regulatory Review</h3>
+      <p>Draft agent writes client communications or trade rationale. Compliance agent checks against SEC/FCA rules. Legal agent flags liability language. Final agent produces approved version.</p>
+      <div class="pipeline-mini">Draft Agent → Compliance Agent → Legal Agent → Approved Output</div>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="uc-icon">📰</div>
+    <div>
+      <h3>4. Market Intelligence Report</h3>
+      <p>Three specialist researchers cover macro, sector, and company news simultaneously. Analyst extracts cross-cutting themes. Writer produces a morning briefing report.</p>
+      <div class="pipeline-mini">Macro + Sector + Company Researchers (parallel) → Analyst → Morning Briefing</div>
+    </div>
+  </div>
+
+  <div class="use-case">
+    <div class="uc-icon">📬</div>
+    <div>
+      <h3>5. Client Report Generation</h3>
+      <p>Data agent pulls portfolio performance. Narrative agent explains what happened and why. Tone agent adjusts language for retail vs institutional. Final agent formats the report.</p>
+      <div class="pipeline-mini">Data Agent → Narrative Agent → Tone Agent → Client Report (PDF-ready)</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <h2>System <span>Architecture</span></h2>
+  <p class="section-sub">Two core abstractions — Agent and Orchestrator — power all pipelines.</p>
+
+  <div class="cards" style="margin-bottom: 48px;">
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>Agent</h3>
+      <p>Each Agent wraps a Claude model with a named role, a system prompt defining its expertise, and a conversation history. Agents are stateful — they remember prior turns within a session.</p>
+      <pre style="margin-top:16px; font-size:12px;"><code><span class="keyword">agent</span> = Agent(
+  name=<span class="string">"BullAnalyst"</span>,
+  system_prompt=<span class="string">"Build the buy case..."</span>,
+  model=<span class="string">"claude-opus-4-6"</span>
+)
+response = agent.chat(<span class="string">"Analyse Apple Q4"</span>)</code></pre>
+    </div>
+    <div class="card">
+      <div class="icon">🎯</div>
+      <h3>Orchestrator</h3>
+      <p>The Orchestrator registers agents and routes messages between them. It implements four coordination patterns: direct routing, sequential pipeline, feedback loop, and broadcast.</p>
+      <pre style="margin-top:16px; font-size:12px;"><code><span class="keyword">orch</span> = Orchestrator()
+orch.register(researcher)
+orch.register(analyst)
+orch.pipeline(steps, task)</code></pre>
+    </div>
+  </div>
+
+  <h3 style="font-size:20px; font-weight:700; margin-bottom:24px;">Interaction Patterns</h3>
+
+  <table style="margin-bottom:24px;">
+    <tr><th>Pattern</th><th>How it works</th><th>Best for</th></tr>
+    <tr>
+      <td><span class="tag purple">Pipeline</span></td>
+      <td>Output of Agent A becomes input to Agent B, then C...</td>
+      <td>Earnings analysis, code review, report generation</td>
+    </tr>
+    <tr>
+      <td><span class="tag orange">Feedback Loop</span></td>
+      <td>Agent A produces → Agent B critiques → A revises → repeat N times</td>
+      <td>Investment debate, document drafting, compliance review</td>
+    </tr>
+    <tr>
+      <td><span class="tag blue">Broadcast</span></td>
+      <td>Same message sent to all agents simultaneously, responses collected</td>
+      <td>Multi-angle research, risk committee views</td>
+    </tr>
+    <tr>
+      <td><span class="tag green">Direct Route</span></td>
+      <td>Send one message to one specific agent</td>
+      <td>Ad-hoc queries, single-step analysis</td>
+    </tr>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- EARNINGS PIPELINE DETAIL -->
+<section id="pipelines">
+  <h2>Earnings Analysis <span>Pipeline</span></h2>
+  <p class="section-sub">The flagship finance pipeline — from raw transcript to investment memo.</p>
+
+  <div class="pipeline">
+    <div class="agent-box">
+      <div class="agent-icon">📄</div>
+      <div class="agent-name">Input</div>
+      <div class="agent-role">Earnings transcript</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box highlight">
+      <div class="agent-icon">🔍</div>
+      <div class="agent-name">Researcher</div>
+      <div class="agent-role">Extracts facts & numbers</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box highlight">
+      <div class="agent-icon">🐂</div>
+      <div class="agent-name">Bull Analyst</div>
+      <div class="agent-role">Builds buy case</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box highlight">
+      <div class="agent-icon">🐻</div>
+      <div class="agent-name">Bear Analyst</div>
+      <div class="agent-role">Builds sell case</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box highlight">
+      <div class="agent-icon">⚠️</div>
+      <div class="agent-name">Risk Manager</div>
+      <div class="agent-role">Stress-tests thesis</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box highlight">
+      <div class="agent-icon">📋</div>
+      <div class="agent-name">Report Writer</div>
+      <div class="agent-role">Investment memo</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="agent-box">
+      <div class="agent-icon">⬇️</div>
+      <div class="agent-name">Output</div>
+      <div class="agent-role">Downloadable memo</div>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Agent</th><th>Role</th><th>Output</th></tr>
+    <tr><td>🔍 Researcher</td><td>Extracts revenue, margins, guidance, surprises from transcript</td><td>Structured fact sheet</td></tr>
+    <tr><td>🐂 Bull Analyst</td><td>Identifies growth catalysts, moat, valuation support</td><td>Buy case bullet points</td></tr>
+    <tr><td>🐻 Bear Analyst</td><td>Identifies risks, competition, red flags, overvaluation</td><td>Sell case bullet points</td></tr>
+    <tr><td>⚠️ Risk Manager</td><td>Top 5 risks with likelihood, impact, and hedging suggestions</td><td>Risk register</td></tr>
+    <tr><td>📋 Report Writer</td><td>Structures all inputs into a professional investment memo</td><td>Buy/Hold/Sell + memo (.txt)</td></tr>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- TECH SPEC -->
+<section id="tech">
+  <h2>Technical <span>Specification</span></h2>
+  <p class="section-sub">Built to be extended, integrated, and deployed in production.</p>
+
+  <div class="cards" style="margin-bottom: 40px;">
+    <div class="card">
+      <h3>🧱 Stack</h3>
+      <table style="margin-top:12px; font-size:13px;">
+        <tr><th>Component</th><th>Technology</th></tr>
+        <tr><td>AI Models</td><td>Anthropic Claude (claude-opus-4-6)</td></tr>
+        <tr><td>SDK</td><td>anthropic Python SDK ≥ 0.52</td></tr>
+        <tr><td>UI</td><td>Streamlit ≥ 1.35</td></tr>
+        <tr><td>Language</td><td>Python 3.10+</td></tr>
+        <tr><td>Hosting</td><td>Any cloud / Codespaces / Agent Core</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>📁 Project Structure</h3>
+      <pre style="margin-top:12px; font-size:12px; background:#f8fafc; color:#1e293b;"><code>agenticframework/
+├── agents/
+│   ├── base.py          <span class="comment"># Agent class</span>
+│   └── orchestrator.py  <span class="comment"># Orchestrator</span>
+├── examples/
+│   ├── 01_debate.py
+│   ├── 02_code_pipeline.py
+│   ├── 03_research_team.py
+│   └── 04_earnings_analysis.py
+├── ui/
+│   └── app.py           <span class="comment"># Streamlit UI</span>
+└── managed_agents/
+    ├── setup.py         <span class="comment"># Agent Core setup</span>
+    └── run_session.py   <span class="comment"># Session runner</span></code></pre>
+    </div>
+  </div>
+
+  <table>
+    <tr><th>Feature</th><th>Status</th><th>Notes</th></tr>
+    <tr><td>Real-time token streaming</td><td><span class="tag green">Live</span></td><td>Streamlit st.write_stream + Anthropic stream API</td></tr>
+    <tr><td>Adaptive thinking</td><td><span class="tag green">Live</span></td><td>claude-opus-4-6 with thinking: adaptive</td></tr>
+    <tr><td>Tool use (web search, code exec)</td><td><span class="tag green">Live</span></td><td>Pass tools=[] to any Agent</td></tr>
+    <tr><td>Conversation memory</td><td><span class="tag green">Live</span></td><td>Each agent maintains full history</td></tr>
+    <tr><td>Downloadable reports</td><td><span class="tag green">Live</span></td><td>.txt download from Streamlit UI</td></tr>
+    <tr><td>Agent Core (hosted agents)</td><td><span class="tag blue">Beta</span></td><td>managed_agents/setup.py + run_session.py</td></tr>
+    <tr><td>Bloomberg / market data integration</td><td><span class="tag orange">Roadmap</span></td><td>Via custom tool handlers</td></tr>
+    <tr><td>PDF report export</td><td><span class="tag orange">Roadmap</span></td><td>python-docx / reportlab integration</td></tr>
+    <tr><td>Multi-user login</td><td><span class="tag orange">Roadmap</span></td><td>Streamlit auth or Auth0</td></tr>
+    <tr><td>Portfolio database integration</td><td><span class="tag orange">Roadmap</span></td><td>SQL / API tool handlers</td></tr>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- DEPLOY -->
+<section id="deploy">
+  <h2>Getting <span>Started</span></h2>
+  <p class="section-sub">Running in 5 minutes on any machine or cloud IDE.</p>
+
+  <div class="cards">
+    <div class="card">
+      <h3>1️⃣ Clone & Install</h3>
+      <pre><code>git clone https://github.com/
+  sachinnarang12/agenticframework
+cd agenticframework
+pip install -r requirements.txt</code></pre>
+    </div>
+    <div class="card">
+      <h3>2️⃣ Set API Key</h3>
+      <pre><code><span class="comment"># Get key from console.anthropic.com</span>
+<span class="comment"># Linux / Mac:</span>
+export ANTHROPIC_API_KEY=sk-ant-...
+
+<span class="comment"># Windows CMD:</span>
+set ANTHROPIC_API_KEY=sk-ant-...</code></pre>
+    </div>
+    <div class="card">
+      <h3>3️⃣ Launch the UI</h3>
+      <pre><code>streamlit run ui/app.py
+
+<span class="comment"># Or run CLI examples:</span>
+python examples/04_earnings_analysis.py</code></pre>
+    </div>
+  </div>
+
+  <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:24px; margin-top:32px;">
+    <h3 style="color:#166534; margin-bottom:8px;">☁️ Deploy on Anthropic Agent Core</h3>
+    <p style="color:#15803d; font-size:15px;">For production deployments with fully hosted agents, Anthropic manages the infrastructure.</p>
+    <pre style="margin-top:12px;"><code><span class="comment"># Step 1 — one-time setup (creates agents on Agent Core)</span>
+python managed_agents/setup.py
+
+<span class="comment"># Step 2 — add IDs to .env, then run sessions</span>
+python managed_agents/run_session.py</code></pre>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ROADMAP -->
+<section>
+  <h2>Product <span>Roadmap</span></h2>
+  <p class="section-sub">What's coming next.</p>
+  <table>
+    <tr><th>Phase</th><th>Features</th><th>Timeline</th></tr>
+    <tr>
+      <td><span class="tag green">v1 — Now</span></td>
+      <td>Core agents, 4 pipelines, Streamlit UI, Agent Core deployment, Earnings Analysis</td>
+      <td>Available today</td>
+    </tr>
+    <tr>
+      <td><span class="tag blue">v2 — Near term</span></td>
+      <td>PDF/DOCX report export, Bloomberg data tool, multi-user login, saved pipeline history</td>
+      <td>Q2 2025</td>
+    </tr>
+    <tr>
+      <td><span class="tag purple">v3 — Mid term</span></td>
+      <td>Portfolio monitoring agents, automated alerts, Slack/Teams integration, custom agent builder UI</td>
+      <td>Q3 2025</td>
+    </tr>
+    <tr>
+      <td><span class="tag orange">v4 — Vision</span></td>
+      <td>ESG compliance agents, regulatory filing scanner, multi-language research, white-label SaaS</td>
+      <td>Q4 2025</td>
+    </tr>
+  </table>
+</section>
+
+<hr class="divider">
+
+<!-- WHO IS IT FOR -->
+<section>
+  <h2>Who Is It <span>For?</span></h2>
+  <p class="section-sub">Built for finance teams that want AI that actually thinks critically.</p>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">🏦</div>
+      <h3>Asset Managers ($1B–$50B AUM)</h3>
+      <p>Mid-size firms without the engineering budgets of JPMorgan or Goldman. Get enterprise-grade AI research pipelines without building from scratch.</p>
+    </div>
+    <div class="card">
+      <div class="icon">📈</div>
+      <h3>Hedge Funds & Family Offices</h3>
+      <p>Small teams, high conviction. Use agents to cover more companies faster — without adding headcount.</p>
+    </div>
+    <div class="card">
+      <div class="icon">🏗️</div>
+      <h3>Fintech Builders</h3>
+      <p>Build financial AI products on top of this open-source framework. The agent patterns and orchestration layer are ready to extend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-size:28px; font-weight:900; color:#fff; margin-bottom:12px;">Agent<span style="color:#7c3aed;">Flow</span></div>
+  <p>Open-source multi-agent AI framework for asset management.</p>
+  <p style="margin-top:8px;">
+    Built on <a href="https://anthropic.com">Anthropic Claude</a> ·
+    <a href="https://github.com/sachinnarang12/agenticframework">GitHub</a> ·
+    MIT License
+  </p>
+  <p style="margin-top:16px; font-size:12px;">© 2025 AgentFlow · All pipelines produce AI-generated analysis. Not financial advice.</p>
+</footer>
+
+</body>
+</html>
