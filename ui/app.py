@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import anthropic
 import streamlit as st
 
-from ui.pipelines import debate, code_review, research, finance, healthcare, small_business, retail, custom_builder
+from ui.pipelines import debate, code_review, research, finance, healthcare, small_business, retail, custom_builder, wannaeat
 
 st.set_page_config(page_title="Multi-Agent AI Framework", page_icon="🤖",
                    layout="wide", initial_sidebar_state="expanded")
@@ -36,15 +36,16 @@ with st.sidebar:
     st.divider()
 
     pipeline = st.radio("Choose a pipeline", options=[
-        "💬  Agent Debate",
-        "🔧  Code Review",
-        "📊  Research Team",
+        "🍽️  WannaEat — Catering Proposal",
         "💰  Finance — Earnings Analysis",
         "🏥  Healthcare — Clinical Support",
         "💼  Small Business — Financial Review",
         "🛍️  Retail — Sales Intelligence",
         "🛠️  Custom Pipeline Builder",
-    ], index=3)
+        "💬  Agent Debate",
+        "🔧  Code Review",
+        "📊  Research Team",
+    ], index=0)
 
     st.divider()
     st.caption("Each agent is a separate Claude instance with its own role and memory.")
@@ -58,11 +59,12 @@ if not api_key:
 
 client = anthropic.Anthropic(api_key=api_key)
 
-if   "Debate"       in pipeline: debate.render(client)
-elif "Code"         in pipeline: code_review.render(client)
-elif "Research"     in pipeline: research.render(client)
+if   "WannaEat"     in pipeline: wannaeat.render(client)
 elif "Finance"      in pipeline: finance.render(client)
 elif "Healthcare"   in pipeline: healthcare.render(client)
 elif "Small"        in pipeline: small_business.render(client)
 elif "Retail"       in pipeline: retail.render(client)
 elif "Custom"       in pipeline: custom_builder.render(client)
+elif "Debate"       in pipeline: debate.render(client)
+elif "Code"         in pipeline: code_review.render(client)
+elif "Research"     in pipeline: research.render(client)
