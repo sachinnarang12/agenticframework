@@ -65,7 +65,7 @@ def stream_agent(
     client: anthropic.Anthropic,
     system_prompt: str,
     messages: list,
-    model: str = "claude-opus-4-6",
+    model: str = "claude-haiku-4-5-20251001",
     max_tokens: int = 8192,
 ):
     """Generator that yields text chunks from the Claude streaming API."""
@@ -86,7 +86,7 @@ def run_agent(
     system_prompt: str,
     user_message: str,
     history: list,
-    model: str = "claude-opus-4-6",
+    model: str = "claude-haiku-4-5-20251001",
 ) -> str:
     """
     Display an agent card, stream the response into it, and return the full text.

@@ -44,7 +44,7 @@ def build_agents(client: anthropic.Anthropic) -> tuple[Agent, Agent, Agent]:
             "focused: 2-3 punchy paragraphs maximum."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     skeptic = Agent(
@@ -56,7 +56,7 @@ def build_agents(client: anthropic.Anthropic) -> tuple[Agent, Agent, Agent]:
             "focused: 2-3 punchy paragraphs maximum."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     moderator = Agent(
@@ -68,7 +68,7 @@ def build_agents(client: anthropic.Anthropic) -> tuple[Agent, Agent, Agent]:
             "synthesis that honors both perspectives. Write in 3-4 paragraphs."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     return optimist, skeptic, moderator

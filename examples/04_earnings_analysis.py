@@ -67,7 +67,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
                 "Use bullet points. Be specific with numbers."
             ),
             client=client,
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
         ),
         "BullAnalyst": Agent(
             name="BullAnalyst",
@@ -78,7 +78,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
                 "Use bullet points with specific evidence from the data."
             ),
             client=client,
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
         ),
         "BearAnalyst": Agent(
             name="BearAnalyst",
@@ -89,7 +89,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
                 "Use bullet points with specific evidence."
             ),
             client=client,
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
         ),
         "RiskManager": Agent(
             name="RiskManager",
@@ -101,7 +101,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
                 "or hedge it."
             ),
             client=client,
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
         ),
         "ReportWriter": Agent(
             name="ReportWriter",
@@ -117,7 +117,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
                 "Be concise, direct, and actionable."
             ),
             client=client,
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
         ),
     }
 

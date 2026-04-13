@@ -99,7 +99,7 @@ def create_agents(client: anthropic.Anthropic) -> dict[str, dict]:
         agent = client.beta.agents.create(
             name=cfg["name"],
             description=cfg["description"],
-            model="claude-opus-4-6",
+            model="claude-haiku-4-5-20251001",
             system=cfg["system"],
             tools=cfg["tools"],
         )

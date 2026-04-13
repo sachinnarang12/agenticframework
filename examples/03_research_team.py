@@ -44,7 +44,7 @@ def build_agents(client: anthropic.Anthropic) -> list[Agent]:
             "Use bullet points. Be specific, not generic."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     impact_researcher = Agent(
@@ -56,7 +56,7 @@ def build_agents(client: anthropic.Anthropic) -> list[Agent]:
             "Focus on WHAT CHANGES for people. Use bullet points."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     future_researcher = Agent(
@@ -67,7 +67,7 @@ def build_agents(client: anthropic.Anthropic) -> list[Agent]:
             "2-5 year horizon. Focus on WHAT'S NEXT. Use bullet points."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     analyst = Agent(
@@ -80,7 +80,7 @@ def build_agents(client: anthropic.Anthropic) -> list[Agent]:
             "a bold headline and 2-3 sentence explanation per insight."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     writer = Agent(
@@ -93,7 +93,7 @@ def build_agents(client: anthropic.Anthropic) -> list[Agent]:
             "statement. Aim for clarity and narrative flow over jargon."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     return [tech_researcher, impact_researcher, future_researcher, analyst, writer]

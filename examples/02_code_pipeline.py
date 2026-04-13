@@ -47,7 +47,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
             "Format your output with clear headings."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     coder = Agent(
@@ -59,7 +59,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
             "Output ONLY the code block — no prose before or after."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     reviewer = Agent(
@@ -75,7 +75,7 @@ def build_agents(client: anthropic.Anthropic) -> dict[str, Agent]:
             "Be specific: quote the relevant line(s) and explain the fix."
         ),
         client=client,
-        model="claude-opus-4-6",
+        model="claude-haiku-4-5-20251001",
     )
 
     return {"Architect": architect, "Coder": coder, "Reviewer": reviewer}
