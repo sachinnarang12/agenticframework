@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import anthropic
 import streamlit as st
 
-from ui.pipelines import debate, code_review, research, finance, healthcare, small_business, retail, custom_builder, wannaeat, ma_migration
+from ui.pipelines import debate, code_review, research, finance, healthcare, small_business, retail, custom_builder, wannaeat, ma_migration, smb_sellability
 
 st.set_page_config(page_title="Multi-Agent AI Framework", page_icon="🤖",
                    layout="wide", initial_sidebar_state="expanded")
@@ -36,6 +36,7 @@ with st.sidebar:
     st.divider()
 
     pipeline = st.radio("Choose a pipeline", options=[
+        "📈  SMB Sellability Audit",
         "🍽️  WannaEat — Catering Proposal",
         "🔄  M&A — Systems Migration",
         "💰  Finance — Earnings Analysis",
@@ -60,7 +61,8 @@ if not api_key:
 
 client = anthropic.Anthropic(api_key=api_key)
 
-if   "WannaEat"     in pipeline: wannaeat.render(client)
+if   "SMB"          in pipeline: smb_sellability.render(client)
+elif "WannaEat"     in pipeline: wannaeat.render(client)
 elif "M&A"          in pipeline: ma_migration.render(client)
 elif "Finance"      in pipeline: finance.render(client)
 elif "Healthcare"   in pipeline: healthcare.render(client)
