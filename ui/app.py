@@ -37,7 +37,7 @@ with st.sidebar:
 
     pipeline = st.radio("Choose a pipeline", options=[
         "📈  SMB Sellability Audit",
-        "🍽️  WannaEat — Catering Proposal",
+        "🍽️  FlavorSavers — Catering Proposal",
         "🔄  M&A — Systems Migration",
         "💰  Finance — Earnings Analysis",
         "🏥  Healthcare — Clinical Support",
@@ -62,7 +62,7 @@ if not api_key:
 client = anthropic.Anthropic(api_key=api_key)
 
 if   "SMB"          in pipeline: smb_sellability.render(client)
-elif "WannaEat"     in pipeline: wannaeat.render(client)
+elif "FlavorSavers"     in pipeline: wannaeat.render(client)
 elif "M&A"          in pipeline: ma_migration.render(client)
 elif "Finance"      in pipeline: finance.render(client)
 elif "Healthcare"   in pipeline: healthcare.render(client)

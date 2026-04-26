@@ -1,5 +1,5 @@
 """
-WannaEat — Catering Proposal Generator
+FlavorSavers — Catering Proposal Generator
 =======================================
 Chef enters their details + customer inquiry.
 Four agents produce a ready-to-send professional catering proposal.
@@ -129,5 +129,5 @@ def render(client):
             mime="text/plain"
         )
 
-        st.info("💡 **Tip for your pitch:** Show WannaEat that this tool reduces chef response time "
+        st.info("💡 **Tip for your pitch:** Show FlavorSavers that this tool reduces chef response time "
                 "from hours to 2 minutes — and a faster response rate directly increases booking conversion.")
